@@ -70,12 +70,30 @@ qualquer atualização no código recarrega o app automaticamente — sem precis
 - **Exportação em .xlsx**: gera uma planilha com plano alimentar, registros de refeições, escores
   diários e ficha de saúde, pronta para compartilhar com a nutricionista pelo menu de
   compartilhamento nativo do celular.
+- **Importação de plano alimentar em .xlsx**: carrega de uma vez as orientações de um ou mais dias
+  a partir de uma planilha (aba "Plano Alimentar", colunas "Dia da semana", "Refeição", "Horário",
+  "Orientação" — o mesmo formato que a exportação já produz). Pensada para funcionar junto com a
+  skill do Claude Code `plano-alimentar` (ver abaixo), que transforma um documento Word/PDF da
+  nutricionista nesse formato.
 
 Os dados ficam salvos localmente no aparelho (AsyncStorage); a exportação em xlsx é o mecanismo de
 compartilhamento com o profissional nesta primeira versão.
 
 Stack: Expo SDK 54, React Native 0.81, TypeScript, Expo Router (navegação por arquivos),
-AsyncStorage (persistência local), SheetJS/`xlsx` (exportação), `expo-sharing` (compartilhamento).
+AsyncStorage (persistência local), SheetJS/`xlsx` (exportação e importação), `expo-sharing`
+(compartilhamento), `expo-document-picker` (seleção de arquivo para importar).
+
+### Importar o plano alimentar de um documento da nutricionista
+
+O Nutritri não tem backend, então não há como um chat do Claude "enviar" dados direto para o
+celular — o fluxo é em duas etapas manuais:
+
+1. Neste projeto, no Claude Code, anexe o documento da nutricionista (Word, PDF ou texto colado) e
+   peça para rodar a skill `plano-alimentar` (`.claude/skills/plano-alimentar/`). Ela devolve uma
+   planilha `.xlsx` já estruturada.
+2. No app, vá em **Início → Ferramentas → "Importar plano (.xlsx)"**, selecione esse arquivo salvo
+   no celular e confirme. As orientações dos dias presentes no arquivo são **substituídas** pelas
+   importadas — vale revisar a planilha antes se já houver orientações cadastradas nesses dias.
 
 ## Estrutura
 
@@ -86,6 +104,7 @@ app/            telas (Expo Router)
   day/[weekday]   refeições do dia + escore diário
   meal/[weekday]/[mealId]   orientação da refeição + registro
   plan/[weekday]  edição das orientações (nutricionista)
+  plan/import.tsx importação de plano alimentar via .xlsx
   health/         ficha de saúde (histórico + novo registro)
   export.tsx      geração e compartilhamento do xlsx
 src/            lógica compartilhada
@@ -93,7 +112,9 @@ src/            lógica compartilhada
   storage.ts      persistência (AsyncStorage)
   AppContext.tsx  estado global e mutações
   exportXlsx.ts   geração da planilha
+  importXlsx.ts   leitura e validação da planilha de importação
   ui.tsx          componentes visuais reutilizáveis
+.claude/skills/plano-alimentar/  skill do Claude Code que estrutura o documento da nutricionista
 ```
 
 ## Fila de melhorias (próximos passos)

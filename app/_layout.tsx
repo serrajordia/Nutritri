@@ -22,6 +22,7 @@ export default function RootLayout() {
           <Stack.Screen name="day/[weekday]" options={{ title: 'Dia' }} />
           <Stack.Screen name="meal/[weekday]/[mealId]" options={{ title: 'Refeição' }} />
           <Stack.Screen name="plan/[weekday]" options={{ title: 'Orientações' }} />
+          <Stack.Screen name="plan/import" options={{ title: 'Importar plano' }} />
           <Stack.Screen name="health/index" options={{ title: 'Ficha de saúde' }} />
           <Stack.Screen name="health/new" options={{ title: 'Novo registro' }} />
           <Stack.Screen name="export" options={{ title: 'Exportar dados' }} />
