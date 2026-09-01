@@ -1,17 +1,59 @@
 # Nutritri
 
-App para ajudar paciente e profissional de nutrição a manter hábitos alimentícios saudáveis.
+> O nome **Nutritri** é uma homenagem à nutricionista Ruth Lemos, que originou o meme "sanduicheiche".
+
+## Para que serve
+
+O Nutritri é um app para ajudar **paciente e profissional de nutrição** a manter uma dieta
+saudável no dia a dia. A ideia é aproximar o app de treino que você já conhece: em vez de dias com
+exercícios, o Nutritri organiza a semana em dias com **refeições**.
+
+Cada perfil de paciente tem um plano alimentar semanal (café da manhã, lanche da manhã, almoço,
+lanche da tarde, jantar — e outras refeições podem ser adicionadas) com as orientações passadas
+pela nutricionista. O paciente registra cada refeição como "realizada", dá um escore de 0 a 5 de
+quão bem seguiu a orientação, e ao final do dia avalia sua adesão geral. O app também mantém uma
+ficha de saúde (peso, altura, idade, frequência cardíaca de repouso, bioimpedância) e permite
+exportar tudo em uma planilha (.xlsx) para compartilhar com a nutricionista.
 
 Funciona em iOS, Android e web a partir da mesma base de código (React Native + Expo), com foco
-inicial em uso mobile.
+inicial em uso mobile — pensado primeiro para usuários de iPhone, mas preparado para Android desde
+já.
 
-## Conceito
+## Como instalar no celular
 
-Assim como um app de treino organiza a semana em dias com exercícios, o Nutritri organiza a semana
-em dias com **refeições**. Cada perfil de paciente tem um plano alimentar semanal (café da manhã,
-lanche da manhã, almoço, lanche da tarde, jantar — e outras refeições podem ser adicionadas) com as
-orientações passadas pela nutricionista. O paciente registra cada refeição como "realizada",
-atribui um escore de 0 a 5 de quão bem seguiu a orientação, e também avalia o dia como um todo.
+Hoje o app está em fase de desenvolvimento, então a instalação é feita através do app gratuito
+**Expo Go**. É rápido:
+
+**1. Em um computador**, com [Node.js](https://nodejs.org) instalado, baixe o projeto e inicie o
+servidor de desenvolvimento:
+
+```bash
+git clone https://github.com/serrajordia/Nutritri.git
+cd Nutritri
+npm install
+npx expo start
+```
+
+Isso vai mostrar um QR code no terminal.
+
+**2. No celular**, instale o Expo Go:
+
+- iOS: [Expo Go na App Store](https://apps.apple.com/app/expo-go/id982107779)
+- Android: [Expo Go na Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
+
+**3. Escaneie o QR code**:
+
+- No iPhone: abra a câmera nativa, aponte para o QR code e toque na notificação que aparece.
+- No Android: abra o app Expo Go e use o leitor de QR code dentro dele.
+
+O celular precisa estar na mesma rede Wi-Fi que o computador. O Nutritri abre direto no celular, e
+qualquer atualização no código recarrega o app automaticamente — sem precisar reinstalar nada.
+
+> Esse fluxo (computador + Expo Go) é o jeito normal de testar um app Expo durante o
+> desenvolvimento. Para gerar um instalável "de verdade" — que funcione sem depender de um
+> computador ligado, e que possa ser publicado na App Store / Play Store — o próximo passo é
+> configurar o [EAS Build](https://docs.expo.dev/build/introduction/) da Expo, ainda não feito
+> neste projeto.
 
 ## Funcionalidades da v1
 
@@ -31,16 +73,6 @@ atribui um escore de 0 a 5 de quão bem seguiu a orientação, e também avalia 
 
 Os dados ficam salvos localmente no aparelho (AsyncStorage); a exportação em xlsx é o mecanismo de
 compartilhamento com o profissional nesta primeira versão.
-
-## Rodando o projeto
-
-```bash
-npm install
-npx expo start
-```
-
-Abra no app **Expo Go** (iOS/Android) escaneando o QR code, ou pressione `i`/`a` para abrir em um
-simulador/emulador, ou `w` para rodar no navegador.
 
 Stack: Expo SDK 57, React Native 0.86, TypeScript, Expo Router (navegação por arquivos),
 AsyncStorage (persistência local), SheetJS/`xlsx` (exportação), `expo-sharing` (compartilhamento).
