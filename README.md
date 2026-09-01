@@ -74,7 +74,7 @@ qualquer atualização no código recarrega o app automaticamente — sem precis
 Os dados ficam salvos localmente no aparelho (AsyncStorage); a exportação em xlsx é o mecanismo de
 compartilhamento com o profissional nesta primeira versão.
 
-Stack: Expo SDK 57, React Native 0.86, TypeScript, Expo Router (navegação por arquivos),
+Stack: Expo SDK 56, React Native 0.85, TypeScript, Expo Router (navegação por arquivos),
 AsyncStorage (persistência local), SheetJS/`xlsx` (exportação), `expo-sharing` (compartilhamento).
 
 ## Estrutura
