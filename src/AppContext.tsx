@@ -30,6 +30,11 @@ interface AppContextValue {
   ) => void;
   removeMealSlot: (profileId: string, weekday: Weekday, mealSlotId: string) => void;
   reorderMealSlots: (profileId: string, weekday: Weekday, orderedIds: string[]) => void;
+  replaceWeekdayMealSlots: (
+    profileId: string,
+    weekday: Weekday,
+    slots: Pick<MealSlot, 'label' | 'orientation' | 'timeHint'>[]
+  ) => void;
   getMealLog: (profileId: string, date: string, mealSlotId: string) => MealLog | undefined;
   logMeal: (input: {
     profileId: string;
@@ -189,6 +194,33 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const replaceWeekdayMealSlots = useCallback(
+    (
+      profileId: string,
+      weekday: Weekday,
+      slots: Pick<MealSlot, 'label' | 'orientation' | 'timeHint'>[]
+    ) => {
+      setState((prev) => {
+        const plan = prev.weeklyPlans[profileId] ?? createDefaultWeeklyPlan();
+        const newSlots: MealSlot[] = slots.map((slot, index) => ({
+          id: generateId(),
+          order: index,
+          label: slot.label,
+          timeHint: slot.timeHint,
+          orientation: slot.orientation,
+        }));
+        return {
+          ...prev,
+          weeklyPlans: {
+            ...prev.weeklyPlans,
+            [profileId]: { ...plan, [weekday]: newSlots },
+          },
+        };
+      });
+    },
+    []
+  );
+
   const getMealLog = useCallback(
     (profileId: string, date: string, mealSlotId: string) =>
       state.mealLogs.find(
@@ -288,6 +320,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     updateMealSlot,
     removeMealSlot,
     reorderMealSlots,
+    replaceWeekdayMealSlots,
     getMealLog,
     logMeal,
     getDayLog,

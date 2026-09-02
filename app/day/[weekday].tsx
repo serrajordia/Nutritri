@@ -9,7 +9,7 @@ import { Button, Card, Screen, SectionTitle, ScoreSelector, colors, scoreColor }
 export default function DayScreen() {
   const params = useLocalSearchParams<{ weekday: string }>();
   const weekday = Number(params.weekday) as Weekday;
-  const { activeProfile, activeWeeklyPlan, state, getDayLog, logDay } = useApp();
+  const { loading, activeProfile, activeWeeklyPlan, state, getDayLog, logDay } = useApp();
 
   const dateKey = useMemo(() => toDateKey(dateForWeekdayThisWeek(weekday)), [weekday]);
   const slots = useMemo(
@@ -29,9 +29,18 @@ export default function DayScreen() {
     }
   }, [existingDayLog, dayLogTouched]);
 
-  if (!activeProfile) {
-    router.replace('/');
-    return null;
+  useEffect(() => {
+    if (!loading && !activeProfile) {
+      router.replace('/');
+    }
+  }, [loading, activeProfile]);
+
+  if (loading || !activeProfile) {
+    return (
+      <Screen>
+        <Text style={{ color: colors.textMuted }}>Carregando...</Text>
+      </Screen>
+    );
   }
 
   function handleSaveDayScore() {

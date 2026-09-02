@@ -78,6 +78,11 @@ export default function HomeScreen() {
 
       <SectionTitle>Ferramentas</SectionTitle>
       <Button label="Ficha de saúde" onPress={() => router.push('/health')} variant="secondary" />
+      <Button
+        label="Importar plano (.xlsx)"
+        onPress={() => router.push('/plan/import')}
+        variant="secondary"
+      />
       <Button label="Exportar dados (xlsx)" onPress={() => router.push('/export')} variant="secondary" />
       <Button label="Trocar de perfil" onPress={() => router.push('/')} variant="secondary" />
     </Screen>

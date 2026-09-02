@@ -1,4 +1,5 @@
 import * as FileSystem from 'expo-file-system/legacy';
+import { Platform } from 'react-native';
 import * as Sharing from 'expo-sharing';
 import * as XLSX from 'xlsx';
 import { formatDatePtBr } from './dateUtils';
@@ -105,8 +106,16 @@ export async function exportProfileToXlsx(state: AppState, profile: Profile): Pr
     'Ficha de Saúde'
   );
 
-  const base64 = XLSX.write(workbook, { type: 'base64', bookType: 'xlsx' }) as string;
   const fileName = `nutritri_${profile.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}.xlsx`;
+
+  if (Platform.OS === 'web') {
+    // In the browser, SheetJS triggers a normal file download on its own —
+    // there is no app cache directory or native share sheet to go through.
+    XLSX.writeFile(workbook, fileName, { bookType: 'xlsx' });
+    return;
+  }
+
+  const base64 = XLSX.write(workbook, { type: 'base64', bookType: 'xlsx' }) as string;
   const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
 
   await FileSystem.writeAsStringAsync(fileUri, base64, {
