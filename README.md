@@ -53,7 +53,33 @@ qualquer atualização no código recarrega o app automaticamente — sem precis
 > desenvolvimento. Para gerar um instalável "de verdade" — que funcione sem depender de um
 > computador ligado, e que possa ser publicado na App Store / Play Store — o próximo passo é
 > configurar o [EAS Build](https://docs.expo.dev/build/introduction/) da Expo, ainda não feito
-> neste projeto.
+> neste projeto (exige conta Apple Developer paga).
+
+## Alternativa gratuita: instalar como app web (PWA), sem PC ligado
+
+Se você não quer depender do computador rodando o `npx expo start`, e não quer pagar a conta Apple
+Developer só para testar, o Nutritri também roda como **PWA** ("app web" instalável) — funciona
+sozinho no celular depois de instalado, sem servidor, de graça.
+
+- **`.github/workflows/deploy-web.yml`**: a cada push na branch `main`, exporta a versão web
+  (`npx expo export --platform web`) e publica no GitHub Pages automaticamente. Para ativar,
+  habilite o GitHub Pages do repositório em Settings → Pages → Source: "GitHub Actions" (feito uma
+  vez só).
+- Depois de publicado, no iPhone: abra a URL do Pages no Safari → Compartilhar → **"Adicionar à
+  Tela de Início"**. O app abre em tela cheia, com ícone próprio, como se fosse instalado de
+  verdade.
+- Os dados continuam 100% locais — o `AsyncStorage` usa `localStorage` do navegador
+  automaticamente, nada muda no armazenamento.
+
+Duas ressalvas técnicas, se for mexer nesse fluxo:
+- O export web usa modo "single" (SPA) de propósito — testamos com pré-renderização estática e ela
+  causa um erro de hydration do React, porque o app depende de dados só disponíveis no navegador
+  (`localStorage`). Não trocar `web.output` para `"static"` em `app.json` sem resolver isso antes.
+- Como é uma SPA, recarregar a página numa rota como `/day/1` só funciona porque o workflow copia
+  `index.html` para `404.html` no output (o "truque" padrão de SPA no GitHub Pages: qualquer
+  caminho sem arquivo correspondente cai no `404.html`, que serve o mesmo app, e o roteador do
+  Expo Router assume a partir da URL real). Se trocar de hospedagem, replicar esse comportamento
+  (Vercel/Netlify fazem isso com uma regra de rewrite em vez do truque do 404).
 
 ## Funcionalidades da v1
 
@@ -81,7 +107,8 @@ compartilhamento com o profissional nesta primeira versão.
 
 Stack: Expo SDK 54, React Native 0.81, TypeScript, Expo Router (navegação por arquivos),
 AsyncStorage (persistência local), SheetJS/`xlsx` (exportação e importação), `expo-sharing`
-(compartilhamento), `expo-document-picker` (seleção de arquivo para importar).
+(compartilhamento), `expo-document-picker` (seleção de arquivo para importar), `react-native-web`
+(versão web/PWA).
 
 ### Importar o plano alimentar de um documento da nutricionista
 
@@ -115,6 +142,8 @@ src/            lógica compartilhada
   importXlsx.ts   leitura e validação da planilha de importação
   ui.tsx          componentes visuais reutilizáveis
 .claude/skills/plano-alimentar/  skill do Claude Code que estrutura o documento da nutricionista
+public/         arquivos estáticos da versão web (manifest.json, ícone) copiados como estão
+.github/workflows/deploy-web.yml  publica a versão web no GitHub Pages a cada push em main
 ```
 
 ## Fila de melhorias (próximos passos)

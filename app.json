@@ -24,7 +24,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "name": "Nutritri",
+      "shortName": "Nutritri",
+      "description": "Assistente de dieta para paciente e nutricionista",
+      "lang": "pt-BR",
+      "themeColor": "#2E7D5B",
+      "backgroundColor": "#F4F8F5",
+      "display": "standalone"
     },
     "plugins": ["expo-router"]
   }

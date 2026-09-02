@@ -1,5 +1,6 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
+import { Platform } from 'react-native';
 import * as XLSX from 'xlsx';
 import { WEEKDAY_LABELS, Weekday } from './types';
 
@@ -97,11 +98,14 @@ export async function pickAndParsePlanFile(): Promise<ParsedImportResult | null>
     return null;
   }
 
-  const base64 = await FileSystem.readAsStringAsync(picked.assets[0].uri, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
-
-  const workbook = XLSX.read(base64, { type: 'base64' });
+  const uri = picked.assets[0].uri;
+  const workbook =
+    Platform.OS === 'web'
+      ? XLSX.read(await (await fetch(uri)).arrayBuffer(), { type: 'array' })
+      : XLSX.read(
+          await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 }),
+          { type: 'base64' }
+        );
   const sheetName = workbook.SheetNames.includes(PLAN_SHEET_NAME)
     ? PLAN_SHEET_NAME
     : workbook.SheetNames[0];
