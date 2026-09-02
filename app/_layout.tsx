@@ -1,3 +1,4 @@
+import Constants from 'expo-constants';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -14,9 +15,15 @@ function useWebPwaMetaTags() {
   useEffect(() => {
     if (Platform.OS !== 'web') return;
 
+    // Deployed under a subpath (e.g. GitHub Pages serves this at
+    // /Nutritri/, not the domain root) — app.json's experiments.baseUrl is
+    // the single source of truth for that prefix, so read it instead of
+    // hardcoding "/Nutritri" here too.
+    const base = Constants.expoConfig?.experiments?.baseUrl ?? '';
+
     const tags: [string, Record<string, string>][] = [
-      ['link', { rel: 'manifest', href: '/manifest.json' }],
-      ['link', { rel: 'apple-touch-icon', href: '/icon.png' }],
+      ['link', { rel: 'manifest', href: `${base}/manifest.json` }],
+      ['link', { rel: 'apple-touch-icon', href: `${base}/icon.png` }],
       ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
       ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'default' }],
       ['meta', { name: 'apple-mobile-web-app-title', content: 'Nutritri' }],

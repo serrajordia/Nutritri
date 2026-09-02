@@ -2,13 +2,13 @@
   "name": "Nutritri",
   "short_name": "Nutritri",
   "description": "Assistente de dieta para paciente e nutricionista",
-  "start_url": "/",
+  "start_url": "/Nutritri/",
   "display": "standalone",
   "background_color": "#F4F8F5",
   "theme_color": "#2E7D5B",
   "lang": "pt-BR",
   "icons": [
-    { "src": "/icon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
-    { "src": "/icon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "maskable" }
+    { "src": "/Nutritri/icon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+    { "src": "/Nutritri/icon.png", "sizes": "1024x1024", "type": "image/png", "purpose": "maskable" }
   ]
 }
