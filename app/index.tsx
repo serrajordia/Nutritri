@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { useApp } from '../src/AppContext';
+import { showAlert } from '../src/platformAlert';
 import { Profile } from '../src/types';
 import { Button, Card, Screen, SectionTitle, colors } from '../src/ui';
 
@@ -40,7 +41,7 @@ export default function ProfilesScreen() {
   }
 
   function confirmDelete(profile: Profile) {
-    Alert.alert(
+    showAlert(
       'Remover perfil',
       `Remover "${profile.name}" e todos os dados associados? Esta ação não pode ser desfeita.`,
       [

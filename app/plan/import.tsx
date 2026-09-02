@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useApp } from '../../src/AppContext';
 import { ImportedPlanRow, ParsedImportResult, pickAndParsePlanFile } from '../../src/importXlsx';
+import { showAlert } from '../../src/platformAlert';
 import { Weekday, WEEKDAY_LABELS, WEEKDAY_ORDER } from '../../src/types';
 import { Button, Card, Screen, SectionTitle, colors } from '../../src/ui';
 
@@ -41,7 +42,7 @@ export default function ImportPlanScreen() {
       const parsed = await pickAndParsePlanFile();
       if (parsed) setResult(parsed);
     } catch (error) {
-      Alert.alert(
+      showAlert(
         'Erro ao ler o arquivo',
         error instanceof Error ? error.message : String(error)
       );
@@ -52,7 +53,7 @@ export default function ImportPlanScreen() {
 
   function handleConfirm() {
     if (!activeProfile || !grouped) return;
-    Alert.alert(
+    showAlert(
       'Confirmar importação',
       `As orientações de ${affectedWeekdays.length} dia(s) serão substituídas pelas do arquivo. Esta ação não pode ser desfeita. Continuar?`,
       [
@@ -73,7 +74,7 @@ export default function ImportPlanScreen() {
                 }))
               );
             });
-            Alert.alert('Importação concluída', 'O plano alimentar foi atualizado.');
+            showAlert('Importação concluída', 'O plano alimentar foi atualizado.');
             router.back();
           },
         },

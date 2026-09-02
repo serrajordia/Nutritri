@@ -1,7 +1,8 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Alert, Pressable, Text, TextInput, TextStyle, View } from 'react-native';
+import { Pressable, Text, TextInput, TextStyle, View } from 'react-native';
 import { useApp } from '../../src/AppContext';
+import { showAlert } from '../../src/platformAlert';
 import { MealSlot, Weekday, WEEKDAY_LABELS } from '../../src/types';
 import { Button, Card, Screen, SectionTitle, colors } from '../../src/ui';
 
@@ -118,7 +119,7 @@ export default function PlanScreen() {
   }
 
   function handleRemove(slotId: string, label: string) {
-    Alert.alert('Remover refeição', `Remover "${label}" de ${WEEKDAY_LABELS[weekday]}?`, [
+    showAlert('Remover refeição', `Remover "${label}" de ${WEEKDAY_LABELS[weekday]}?`, [
       { text: 'Cancelar', style: 'cancel' },
       {
         text: 'Remover',
