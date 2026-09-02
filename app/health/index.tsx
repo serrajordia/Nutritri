@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useApp } from '../../src/AppContext';
 import { formatDatePtBr } from '../../src/dateUtils';
+import { showAlert } from '../../src/platformAlert';
 import { Button, Card, Screen, SectionTitle, colors } from '../../src/ui';
 
 function computeBmi(heightCm?: number, weightKg?: number): string | null {
@@ -27,7 +28,7 @@ export default function HealthScreen() {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 
   function confirmDelete(id: string, date: string) {
-    Alert.alert('Remover registro', `Remover o registro de ${formatDatePtBr(date)}?`, [
+    showAlert('Remover registro', `Remover o registro de ${formatDatePtBr(date)}?`, [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Remover', style: 'destructive', onPress: () => deleteHealthRecord(id) },
     ]);

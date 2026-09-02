@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Alert, Text } from 'react-native';
+import { Text } from 'react-native';
 import { useApp } from '../src/AppContext';
 import { exportProfileToXlsx } from '../src/exportXlsx';
+import { showAlert } from '../src/platformAlert';
 import { Button, Card, Screen, SectionTitle, colors } from '../src/ui';
 
 export default function ExportScreen() {
@@ -22,7 +23,7 @@ export default function ExportScreen() {
     try {
       await exportProfileToXlsx(state, activeProfile);
     } catch (error) {
-      Alert.alert('Erro ao exportar', error instanceof Error ? error.message : String(error));
+      showAlert('Erro ao exportar', error instanceof Error ? error.message : String(error));
     } finally {
       setExporting(false);
     }
